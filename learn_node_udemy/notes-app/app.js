@@ -1,75 +1,47 @@
 const fs = require('fs')
 
-const validator = require('validator')
 const chalk = require('chalk')
 const yargs = require('yargs')
 
-const add = require('./utils.js')
 const notes = require('./notes.js')
 
-
-// Write example
-//fs.writeFileSync('notes.txt', 'hello')
-fs.appendFileSync('notes.txt', ' world')
-
-// Function example
-console.log(add(1, 1))
-
-// Another import example
-console.log(notes.getNotes())
-
-// Using a package example
-console.log(validator.isEmail('blah@blah.com'))
-console.log(validator.isEmail('blah.com'))
-console.log(validator.isURL('https://blah.com'))
-
-// Printing in colour
-msg = chalk.bold.green('Chalk bold green')
-console.log(msg)
-
-// argv
-console.log(process.argv)
-console.log(process.argv[2])
-
-command = process.argv[2]
-
-if (command === "hello") {
-    console.log("world")
-}
-
-
 yargs.command({
-    command: 'hello',
-    describe: 'Do a hello world',
+    command: 'add',
+    describe: 'Add a note',
     builder: {
         title: {
-            describe: "A title",
+            describe: 'A title',
             demandOption: true,
-            type: "string"
+            type: 'string'
+        },
+        body: {
+            describe: 'A body',
+            demandOption: true,
+            type: 'string'
         }
     },
     handler: function(argv) {
-        console.log("yargs handler: hello world!")
-        console.log("yargs handler: ", argv['title'])
+        console.log(chalk.bold.green('Adding note: ' + argv['title']))
+        notes.addNote(argv['title'], argv['body'])
     }
 })
 yargs.command({
     command: 'remove',
-    describe: 'remove title2',
+    describe: 'Remove note',
+    builder: {
+        title: {
+            describe: 'The title',
+            demandOption: true,
+            type: 'string'
+        }
+    },
     handler: function(argv) {
-        notes.removeNote('title2')
-        const msg = chalk.bold.red('Removed')
-        console.log(msg)
+        notes.removeNote(argv['title'])
+        console.log(chalk.bold.red('Removed ' + argv['title']))
     }
 })
 
-console.log(yargs.argv)
-
-console.log('--- Notes app ---')
-
-notes.addNote('title2', 'body2')
-
-
-
+yargs.argv
 
 notes.listNotes()
+
