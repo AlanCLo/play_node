@@ -18,11 +18,22 @@ request({ url: url, json: true}, (error, response) => {
     }
 })
 
-/*
-setTimeout(() => {
-    console.log('2 second timer')
-}, 2000)
-*/
+
+
+const geocode = (address, callback) => {
+    setTimeout(() => {
+        const data = {
+            lat: 0,
+            long: 0
+        }
+
+        callback(data)
+    }, 1000)
+}
+
+geocode('Melbourne', (data) => {
+    console.log(data)
+})
 
 
 console.log('Stopping')
