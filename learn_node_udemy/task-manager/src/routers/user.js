@@ -123,10 +123,11 @@ router.patch('/users/:id', auth, async (req, res) => {
 
 router.delete('/users/:id', auth, async (req, res) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id)
+        const user = await User.findById(req.params.id)
         if (!user) {
             return res.status(404).send()
         }
+        await user.remove()
         res.send(user)
     } catch (e) {
         console.log('Error', e)
